@@ -13,8 +13,9 @@ class Snapshot(object):
         self.values = values[:]
         self.values.sort()
 
-    def getValue(self, quantile):
-        assert quantile >= 0.0 and quantile <= 1.0, "{0} is not in [0...1]".format(quantile)
+    def get_value(self, quantile):
+        assert quantile >= 0.0 and quantile <= 1.0,\
+            "{0} is not in [0...1]".format(quantile)
         if len(self.values) == 0:
             return 0.0
 
@@ -32,22 +33,22 @@ class Snapshot(object):
     def size(self):
         return len(self.values)
 
-    def getMedian(self):
-        return self.getValue(self.MEDIAN_Q)
+    def get_median(self):
+        return self.get_value(self.MEDIAN_Q)
 
-    def get75thPercentile(self):
-        return self.getValue(self.P75_Q)
+    def get_75th_percentile(self):
+        return self.get_value(self.P75_Q)
 
-    def get98thPercentile(self):
-        return self.getValue(self.P98_Q)
+    def get_98th_percentile(self):
+        return self.get_value(self.P98_Q)
 
-    def get99thPercentile(self):
-        return self.getValue(self.P99_Q)
+    def get_99th_percentile(self):
+        return self.get_value(self.P99_Q)
 
-    def get999thPercentile(self):
-        return self.getValue(self.P999_Q)
+    def get_999th_percentile(self):
+        return self.get_value(self.P999_Q)
 
-    def getValues(self):
+    def get_values(self):
         return self.values[:]
 
     def dump(output):

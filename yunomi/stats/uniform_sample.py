@@ -1,13 +1,14 @@
-from snapshot import Snapshot
 from random import randint
+
+from snapshot import Snapshot
 
 
 class UniformSample(object):
     BITS_PER_LONG = 63
     values = []
 
-    def __init__(self, reservoirSize):
-        self.values = [0 for x in xrange(reservoirSize)]
+    def __init__(self, reservoir_size):
+        self.values = [0 for x in xrange(reservoir_size)]
         self.clear()
 
     def clear(self):
@@ -24,13 +25,13 @@ class UniformSample(object):
         if self.count <= len(self.values):
             self.values[self.count - 1] = value
         else:
-            r = UniformSample.nextLong(self.count)
+            r = UniformSample.next_long(self.count)
             if r < len(self.values):
                 self.values[r] = value
 
     @classmethod
-    def nextLong(klass, n):
-        return randint(0,n-1)
+    def next_long(klass, n):
+        return randint(0, n-1)
 
-    def getSnapshot(self):
+    def get_snapshot(self):
         return Snapshot(self.values)

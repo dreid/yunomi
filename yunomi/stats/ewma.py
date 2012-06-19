@@ -18,15 +18,15 @@ class EWMA(object):
         self._rate = None
 
     @classmethod
-    def oneMinuteEWMA(klass):
+    def one_minute_EWMA(klass):
         return klass(klass.M1_ALPHA)
 
     @classmethod
-    def fiveMinuteEWMA(klass):
+    def five_minute_EWMA(klass):
         return klass(klass.M5_ALPHA)
 
     @classmethod
-    def fifteenMinuteEWMA(klass):
+    def fifteen_minute_EWMA(klass):
         return klass(klass.M15_ALPHA)
 
     def update(self, value):
@@ -43,5 +43,5 @@ class EWMA(object):
         else:
             self._rate = instantRate
 
-    def getRate(self):
+    def get_rate(self):
         return self._rate * 1000000000

@@ -6,7 +6,7 @@ from yunomi.stats.snapshot import Snapshot
 
 class UniformSampleTests(TestCase):
 
-    def test_a_sample_of_1000_out_of_1000_elements(self):
+    def test_a_sample_of_100_out_of_1000_elements(self):
         sample = UniformSample(100)
         for i in xrange(1000):
             sample.update(i)

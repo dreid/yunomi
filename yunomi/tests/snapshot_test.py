@@ -3,8 +3,9 @@ from unittest import TestCase
 from yunomi.stats.snapshot import Snapshot
 
 
-class SnapShotTests(TestCase):
-    snapshot = Snapshot([5, 1, 2, 3, 4])
+class SnapshotTests(TestCase):
+    def setUp(self):
+        snapshot = Snapshot([5, 1, 2, 3, 4])
 
     def test_small_quantiles_are_the_first_value(self):
         self.assertAlmostEqual(self.snapshot.get_value(0.0), 1)

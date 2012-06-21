@@ -6,7 +6,7 @@ from yunomi.stats.exp_decay_sample import ExponentiallyDecayingSample
 from yunomi.stats.snapshot import Snapshot
 
 
-class ExponentialDecaySapmleTests(TestCase):
+class ExponentiallyDecayingSampleTests(TestCase):
 
     def test_a_sample_of_100_out_of_1000_elements(self):
         sample = ExponentiallyDecayingSample(100, 0.99)
@@ -28,6 +28,7 @@ class ExponentialDecaySapmleTests(TestCase):
 
         self.assertEqual(sample.size(), 10)
         self.assertEqual(snapshot.size(), 10)
+        self.assertAlmostEqual(snapshot.get_median(), 4.5)
 
         for i in snapshot.get_values():
             self.assertTrue(i < 10 and i >= 0)

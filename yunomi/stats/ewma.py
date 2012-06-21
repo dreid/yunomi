@@ -44,4 +44,4 @@ class EWMA(object):
             self._rate = instantRate
 
     def get_rate(self):
-        return self._rate
+        return self._rate * 1000000000

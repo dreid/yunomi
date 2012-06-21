@@ -34,4 +34,7 @@ class UniformSample(object):
         return randint(0, n-1)
 
     def get_snapshot(self):
-        return Snapshot(self.values)
+        copy = []
+        for i in xrange(self.size()):
+            copy.append(self.values[i])
+        return Snapshot(copy)

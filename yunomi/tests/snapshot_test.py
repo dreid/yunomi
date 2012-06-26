@@ -5,7 +5,7 @@ from yunomi.stats.snapshot import Snapshot
 
 class SnapshotTests(TestCase):
     def setUp(self):
-        snapshot = Snapshot([5, 1, 2, 3, 4])
+        self.snapshot = Snapshot([5, 1, 2, 3, 4])
 
     def test_small_quantiles_are_the_first_value(self):
         self.assertAlmostEqual(self.snapshot.get_value(0.0), 1)

@@ -15,7 +15,7 @@ class EWMA(object):
         self._alpha = alpha
         self._interval = (interval or EWMA.INTERVAL) * 1000000000
         self._uncounted = 0.0
-        self._rate = None
+        self._rate = 0.0
 
     @classmethod
     def one_minute_EWMA(klass):

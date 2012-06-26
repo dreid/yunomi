@@ -5,8 +5,8 @@ from yunomi.core.histogram import Histogram
 
 class HistogramTests(TestCase):
     def setUp(self):
-        histogram_b = Histogram(Histogram.SampleType.BIASED)
-        histogram_u = Histogram(Histogram.SampleType.UNIFORM)
+        self.histogram_b = Histogram(Histogram.SampleType.BIASED)
+        self.histogram_u = Histogram(Histogram.SampleType.UNIFORM)
 
     def test_empty_histogram(self):
         for histogram in self.histogram_b, self.histogram_u:

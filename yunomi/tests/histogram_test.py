@@ -4,9 +4,10 @@ from yunomi.core.histogram import Histogram
 
 
 class HistogramTests(TestCase):
+
     def setUp(self):
-        histogram_b = Histogram(Histogram.SampleType.BIASED)
-        histogram_u = Histogram(Histogram.SampleType.UNIFORM)
+        self.histogram_b = Histogram(Histogram.SampleType.BIASED)
+        self.histogram_u = Histogram(Histogram.SampleType.UNIFORM)
 
     def test_empty_histogram(self):
         for histogram in self.histogram_b, self.histogram_u:
@@ -34,7 +35,7 @@ class HistogramTests(TestCase):
             self.assertAlmostEqual(histogram.get_max(), 1000)
             self.assertAlmostEqual(histogram.get_min(), 1)
             self.assertAlmostEqual(histogram.get_mean(), 500.5)
-            self.assertAlmostEqual(histogram.get_std_dev(), 288.8194360957494)
+            self.assertAlmostEqual(histogram.get_std_dev(), 288.8194360957494, places=3)
             self.assertAlmostEqual(histogram.get_sum(), 500500)
 
             snapshot = histogram.get_snapshot()

@@ -15,9 +15,6 @@ class Timer(object):
     def clear(self):
         self.histogram.clear()
 
-    def clear(self):
-        self.histogram.clear()
-
     def update(self, duration):
         if duration >= 0:
             self.histogram.update(duration)

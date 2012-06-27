@@ -12,6 +12,7 @@ class TimerTests(TestCase):
         self.timer = Timer(Clock().seconds)
 
     def test_blank_timer(self):
+        self.timer.clear()
         self.assertEqual(self.timer.get_count(), 0)
         self.assertAlmostEqual(self.timer.get_max(), 0.0)
         self.assertAlmostEqual(self.timer.get_min(), 0.0)
@@ -51,6 +52,7 @@ class TimerTests(TestCase):
                          [10.0, 20.0, 20.0, 30.0, 40.0])
 
     def test_timing_variant_values(self):
-        self.timer.update(9223372036854.775807)
+        self.timer.clear()
+        self.timer.update(9223372036854775807)
         self.timer.update(0)
-        self.assertAlmostEqual(self.timer.get_std_dev(), 6.521908912666392E12)
+        self.assertAlmostEqual(self.timer.get_std_dev(), 6521908912666392000)

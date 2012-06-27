@@ -13,7 +13,7 @@ class EWMA(object):
 
     def __init__(self, alpha, interval=None):
         self._alpha = alpha
-        self._interval = (interval or EWMA.INTERVAL) * 1000000000
+        self._interval = (interval or EWMA.INTERVAL)
         self._uncounted = 0.0
         self._rate = 0.0
 
@@ -44,4 +44,4 @@ class EWMA(object):
             self._rate = instantRate
 
     def get_rate(self):
-        return self._rate * 1000000000
+        return self._rate

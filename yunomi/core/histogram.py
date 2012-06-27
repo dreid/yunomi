@@ -12,8 +12,8 @@ class Histogram(object):
     DEFAULT_SAMPLE_SIZE = 1028
     DEFAULT_ALPHA = 0.015
     count = 0
-    variance = [-1.0, 0.0]
-    arrayCache = [0.0, 0.0]
+    mean = 0
+    sum_of_squares = -1.0
     SampleType = enum(UNIFORM = UniformSample(DEFAULT_SAMPLE_SIZE),
                       BIASED = ExponentiallyDecayingSample(DEFAULT_SAMPLE_SIZE, DEFAULT_ALPHA))
 
@@ -26,7 +26,9 @@ class Histogram(object):
         self.max_ = -2147483647.0
         self.min_ = 2147483647.0
         self.sum_ = 0.0
-        self.variance = [-1.0, 0.0]
+        self.count = 0
+        self.mean = 0
+        self.sum_of_squares = -1.0
 
     def update(self, value):
         self.count += 1
@@ -62,7 +64,7 @@ class Histogram(object):
     def get_variance(self):
         if self.get_count() <= 1:
             return 0.0
-        return self.variance[1] / (self.get_count() - 1)
+        return self.sum_of_squares / (self.get_count() - 1)
 
     def get_sum(self):
         return self.sum_
@@ -79,13 +81,11 @@ class Histogram(object):
             self.min_ = new_min
 
     def update_variance(self, value):
-        old = self.variance
-        new = self.arrayCache
-        if old[0] == -1.0:
-            new[0] = value
-            new[1] = 0.0
+        old_mean = self.mean
+        delta = value - old_mean
+        if self.sum_of_squares == -1.0:
+            self.mean = value
+            self.sum_of_squares = 0.0
         else:
-            new[0] = old[0] + (float(value - old[0]) / self.get_count())
-            new[1] = old[1] + (float(value - old[0]) * (value - new[0]))
-        self.arrayCache = old
-        self.variance = new
+            self.mean += (float(delta) / self.get_count())
+            self.sum_of_squares += (float(delta) * (value - self.mean))

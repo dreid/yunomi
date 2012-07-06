@@ -47,5 +47,5 @@ class Meter(object):
         if self._count == 0:
             return 0.0
         else:
-            elapsed = clock() - self.start_time
+            elapsed = self.clock() - self.start_time
             return self._count / elapsed

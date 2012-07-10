@@ -12,7 +12,6 @@ class TimerTests(TestCase):
         self.timer = Timer(Clock().seconds)
 
     def test_blank_timer(self):
-        self.timer.clear()
         self.assertEqual(self.timer.get_count(), 0)
         self.assertAlmostEqual(self.timer.get_max(), 0.0)
         self.assertAlmostEqual(self.timer.get_min(), 0.0)

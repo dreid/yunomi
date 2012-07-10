@@ -6,9 +6,9 @@ from yunomi.core.meter import Meter
 
 
 class Timer(object):
-    histogram = Histogram(Histogram.SampleType.BIASED)
 
     def __init__(self, clock = time):
+        self.histogram = Histogram(Histogram.SampleType.BIASED)
         self.clock = clock
         self.meter = Meter("calls", self.clock)
 
@@ -59,6 +59,3 @@ class Timer(object):
 
     def get_event_type(self):
         return self.meter.get_event_type()
-
-    def stop(self):
-        meter.stop()

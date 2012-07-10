@@ -6,24 +6,22 @@ from yunomi.stats.ewma import EWMA
 class Meter(object):
     INTERVAL = 5
 
-    _m1_rate = EWMA.one_minute_EWMA()
-    _m5_rate = EWMA.five_minute_EWMA()
-    _m15_rate = EWMA.fifteen_minute_EWMA()
-
-    _count = 0
-
     def __init__(self, event_type, clock = time):
         self.event_type = event_type
         self.clock = clock
         self.start_time = self.clock()
+        self._m1_rate = EWMA.one_minute_EWMA()
+        self._m5_rate = EWMA.five_minute_EWMA()
+        self._m15_rate = EWMA.fifteen_minute_EWMA()
+        self._count = 0
 
     def get_event_type(self):
         return self.event_type
 
     def _tick(self):
-        _m1_rate.tick()
-        _m15_rate.tick()
-        _m5_rate.tick()
+        self._m1_rate.tick()
+        self._m15_rate.tick()
+        self._m5_rate.tick()
 
     def mark(self, n = 1):
         self._count += n

@@ -21,10 +21,10 @@ class EWMA(object):
         """
         Create a new EWMA with a specific smoothing constant.
 
-        @type         alpha: number
-        @param        alpha: the smoothing constant
-        @param     interval: the expected tick interval
-        @param intervalUnit: the time unit of the tick interval
+        @type alpha: C{float}
+        @param alpha: the smoothing constant
+        @type interval: C{int}
+        @param interval: the expected tick interval
         """
         self.initialized = False
         self._alpha = alpha
@@ -38,7 +38,7 @@ class EWMA(object):
         Creates a new EWMA which is equivalent to the UNIX one minute load average and which expects
         to be ticked every 5 seconds.
 
-        @rtype:  EWMA
+        @rtype: L{EWMA}
         @return: a one-minute EWMA
         """
         return klass(klass.M1_ALPHA)
@@ -49,7 +49,7 @@ class EWMA(object):
         Creates a new EWMA which is equivalent to the UNIX five minute load average and which expects
         to be ticked every 5 seconds.
 
-        @rtype:  EWMA
+        @rtype: L{EWMA}
         @return: a one-minute EWMA
         """
         return klass(klass.M5_ALPHA)
@@ -60,7 +60,7 @@ class EWMA(object):
         Creates a new EWMA which is equivalent to the UNIX fifteen minute load average and which expects
         to be ticked every 5 seconds.
 
-        @rtype:  EWMA
+        @rtype: L{EWMA}
         @return: a one-minute EWMA
         """
         return klass(klass.M15_ALPHA)
@@ -69,7 +69,7 @@ class EWMA(object):
         """
         Increment the moving average with a new value.
 
-        @type  value: number
+        @type value: C{int} or C{float}
         @param value: the new value
         """
         self._uncounted += value
@@ -91,7 +91,7 @@ class EWMA(object):
         """
         Returns the rate in counts per second.
 
-        @rtype:  number
+        @rtype: C{float}
         @return: the rate
         """
         return self._rate

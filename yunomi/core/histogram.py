@@ -19,9 +19,9 @@ class Histogram(object):
     count = 0
     mean = 0
     sum_of_squares = -1.0 
-    The type of sampling the histogram should be performing.
     SampleType = enum(UNIFORM = UniformSample(DEFAULT_SAMPLE_SIZE),
                       BIASED = ExponentiallyDecayingSample(DEFAULT_SAMPLE_SIZE, DEFAULT_ALPHA))
+    """@cvar The type of sampling the histogram should be performing."""
 
     def __init__(self, sample):
         """

@@ -29,7 +29,7 @@ class ExponentiallyDecayingSample(object):
         @type reservoir_size: C{int}
         @param reservoir_size: the number of samples to keep in the sampling
                                reservoir
-        @type alpha: number
+        @type alpha: C{float}
         @param alpha: the exponential decay factor; the higher this is, the more
                       biased the sample will be towards newer values
         @type clock: C{function}
@@ -112,23 +112,12 @@ class ExponentiallyDecayingSample(object):
 
     def _rescale(self, now, next_):
         """
-        "A common feature of the above techniques—indeed, the key technique that
-        allows us to track the decayed weights efficiently—is that they maintain
-        counts and other quantities based on g(ti − L), and only scale by g(t − L)
-        at query time. But while g(ti −L)/g(t−L) is guaranteed to lie between zero
-        and one, the intermediate values of g(ti − L) could become very large. For
-        polynomial functions, these values should not grow too large, and should be
-        effectively represented in practice by floating point values without loss of
-        precision. For exponential functions, these values could grow quite large as
-        new values of (ti − L) become large, and potentially exceed the capacity of
-        common floating point types. However, since the values stored by the
-        algorithms are linear combinations of g values (scaled sums), they can be
-        rescaled relative to a new landmark. That is, by the analysis of exponential
-        decay in Section III-A, the choice of L does not affect the final result. We
-        can therefore multiply each value based on L by a factor of exp(−α(L′ − L)),
-        and obtain the correct value as if we had instead computed relative to a new
-        landmark L′ (and then use this new L′ at query time). This can be done with
-        a linear pass over whatever data structure is being used."
+        Rescales the I{values}, assigning new priorities for each value.
+
+        @type now: C{int}
+        @param now: the time right now
+        @type next_: C{int}
+        @param next_: the scheduled time for the next rescale
         """
         if self.next_scale_time == next_:
             self.next_scale_time = now + self.RESCALE_THRESHOLD

@@ -105,7 +105,8 @@ class ExponentiallyDecayingSample(object):
 
     def _weight(self, t):
         """
-        
+        Assigns a weight based on a specific timer interval, used to calculate
+        priority for each value.
         """
         return exp(self.alpha * t)
 

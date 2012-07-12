@@ -12,7 +12,7 @@ class Histogram(object):
     """
     A metric which calculates the distribution of a value.
 
-    @see <a href="http://www.johndcook.com/standard_deviation.html">Accurately computing running variance</a>
+    @see: <a href="http://www.johndcook.com/standard_deviation.html">Accurately computing running variance</a>
     """
     DEFAULT_SAMPLE_SIZE = 1028
     DEFAULT_ALPHA = 0.015
@@ -21,7 +21,6 @@ class Histogram(object):
     sum_of_squares = -1.0 
     SampleType = enum(UNIFORM = UniformSample(DEFAULT_SAMPLE_SIZE),
                       BIASED = ExponentiallyDecayingSample(DEFAULT_SAMPLE_SIZE, DEFAULT_ALPHA))
-    """@cvar The type of sampling the histogram should be performing."""
 
     def __init__(self, sample):
         """

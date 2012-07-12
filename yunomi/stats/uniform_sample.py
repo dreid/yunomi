@@ -8,7 +8,7 @@ class UniformSample(object):
     A random sample of a stream of {@code long}s. Uses Vitter's Algorithm R to
     produce a statistically representative sample.
 
-    @see <a href="http://www.cs.umd.edu/~samir/498/vitter.pdf">Random Sampling with a Reservoir</a>
+    @see: <a href="http://www.cs.umd.edu/~samir/498/vitter.pdf">Random Sampling with a Reservoir</a>
     """
     BITS_PER_LONG = 63
     values = []
@@ -47,7 +47,7 @@ class UniformSample(object):
         """
         Updates the I{self.values} at a random index with the given value.
 
-        @type: C{int} or C{float}
+        @type value: C{int} or C{float}
         @param value: the new value to be added
         """
         self.count += 1

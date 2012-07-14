@@ -1,4 +1,5 @@
 from math import exp
+from time import time
 
 
 class EWMA(object):
@@ -9,15 +10,8 @@ class EWMA(object):
     @see: <a href="http://www.teamquest.com/pdfs/whitepaper/ldavg2.pdf">UNIX Load Average Part 2: Not Your Average Average</a>
     """
     INTERVAL = 5
-    SECONDS_PER_MINUTE = 60.0
-    ONE_MINUTE = 1
-    FIVE_MINUTES = 5
-    FIFTEEN_MINUTES = 15
-    M1_ALPHA = 1 - exp(-INTERVAL / SECONDS_PER_MINUTE / ONE_MINUTE)
-    M5_ALPHA = 1 - exp(-INTERVAL / SECONDS_PER_MINUTE / FIVE_MINUTES)
-    M15_ALPHA = 1 - exp(-INTERVAL / SECONDS_PER_MINUTE / FIFTEEN_MINUTES)
 
-    def __init__(self, alpha, interval=None):
+    def __init__(self, load_average, interval=None, clock = time):
         """
         Create a new EWMA with a specific smoothing constant.
 
@@ -27,43 +21,45 @@ class EWMA(object):
         @param interval: the expected tick interval
         """
         self.initialized = False
-        self._alpha = alpha
+        self._load_average = load_average
         self._interval = (interval or EWMA.INTERVAL)
         self._uncounted = 0.0
         self._rate = 0.0
+        self.clock = clock
+        self._last_tick = self.clock()
 
     @classmethod
-    def one_minute_EWMA(klass):
+    def one_minute_EWMA(klass, clock = time):
         """
-        Creates a new EWMA which is equivalent to the UNIX one minute load average and which expects
-        to be ticked every 5 seconds.
+        Creates a new EWMA which is equivalent to the UNIX one minute load
+        average and which expects to be ticked every 5 seconds.
 
         @rtype: L{EWMA}
         @return: a one-minute EWMA
         """
-        return klass(klass.M1_ALPHA)
+        return klass(60, clock = clock)
 
     @classmethod
-    def five_minute_EWMA(klass):
+    def five_minute_EWMA(klass, clock = time):
         """
-        Creates a new EWMA which is equivalent to the UNIX five minute load average and which expects
-        to be ticked every 5 seconds.
+        Creates a new EWMA which is equivalent to the UNIX five minute load
+        average and which expects to be ticked every 5 seconds.
 
         @rtype: L{EWMA}
-        @return: a one-minute EWMA
+        @return: a five-minute EWMA
         """
-        return klass(klass.M5_ALPHA)
+        return klass(300, clock = clock)
 
     @classmethod
-    def fifteen_minute_EWMA(klass):
+    def fifteen_minute_EWMA(klass, clock = time):
         """
-        Creates a new EWMA which is equivalent to the UNIX fifteen minute load average and which expects
-        to be ticked every 5 seconds.
+        Creates a new EWMA which is equivalent to the UNIX fifteen minute load
+        average and which expects to be ticked every 5 seconds.
 
         @rtype: L{EWMA}
-        @return: a one-minute EWMA
+        @return: a fifteen-minute EWMA
         """
-        return klass(klass.M15_ALPHA)
+        return klass(900, clock = clock)
 
     def update(self, value):
         """
@@ -78,20 +74,41 @@ class EWMA(object):
         """
         Mark the passage of time and decay the current rate accordingly.
         """
-        instantRate = self._uncounted / self._interval
+        prev = self._last_tick
+        now = self.clock()
+        interval = now - prev
+
+        instant_rate = self._uncounted / interval
         self._uncounted = 0.0
 
         if self.initialized:
-            self._rate += (self._alpha * (instantRate - self._rate))
+            self._rate += (self._alpha(interval) * (instant_rate - self._rate))
         else:
-            self._rate = instantRate
+            self._rate = instant_rate
             self.initialized = True
+
+        self._last_tick = now
+
 
     def get_rate(self):
         """
-        Returns the rate in counts per second.
+        Returns the rate in counts per second. Calls L{EWMA.tick} when the
+        elapsed time is greater than L{EWMA._interval}.
 
         @rtype: C{float}
         @return: the rate
         """
+        if self.clock() - self._last_tick >= self._interval:
+            self.tick()
         return self._rate
+
+    def _alpha(self, interval):
+        """
+        Calculate the alpha based on the time since the last tick. This is
+        necessary because a single threaded Python program loses precision  
+        under high load, so we can't assume a consistant I{EWMA._interval}.
+
+        @type interval: C{float}
+        @param interval: the interval we use to calculate the alpha
+        """
+        return 1 - exp(-interval / self._load_average)

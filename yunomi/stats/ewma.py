@@ -11,17 +11,17 @@ class EWMA(object):
     """
     INTERVAL = 5
 
-    def __init__(self, load_average, interval=None, clock = time):
+    def __init__(self, period, interval=None, clock = time):
         """
         Create a new EWMA with a specific smoothing constant.
 
-        @type alpha: C{float}
-        @param alpha: the smoothing constant
+        @type period: C{int}
+        @param period: the time it takes to reach a given significance level
         @type interval: C{int}
-        @param interval: the expected tick interval
+        @param interval: the expected tick interval, defaults to 5s
         """
         self.initialized = False
-        self._load_average = load_average
+        self._period = period
         self._interval = (interval or EWMA.INTERVAL)
         self._uncounted = 0.0
         self._rate = 0.0
@@ -32,7 +32,7 @@ class EWMA(object):
     def one_minute_EWMA(klass, clock = time):
         """
         Creates a new EWMA which is equivalent to the UNIX one minute load
-        average and which expects to be ticked every 5 seconds.
+        average.
 
         @rtype: L{EWMA}
         @return: a one-minute EWMA
@@ -43,7 +43,7 @@ class EWMA(object):
     def five_minute_EWMA(klass, clock = time):
         """
         Creates a new EWMA which is equivalent to the UNIX five minute load
-        average and which expects to be ticked every 5 seconds.
+        average.
 
         @rtype: L{EWMA}
         @return: a five-minute EWMA
@@ -54,7 +54,7 @@ class EWMA(object):
     def fifteen_minute_EWMA(klass, clock = time):
         """
         Creates a new EWMA which is equivalent to the UNIX fifteen minute load
-        average and which expects to be ticked every 5 seconds.
+        average.
 
         @rtype: L{EWMA}
         @return: a fifteen-minute EWMA
@@ -110,4 +110,4 @@ class EWMA(object):
         @type interval: C{float}
         @param interval: the interval we use to calculate the alpha
         """
-        return 1 - exp(-interval / self._load_average)
+        return 1 - exp(-interval / self._period)

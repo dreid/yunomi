@@ -89,7 +89,6 @@ class EWMA(object):
 
         self._last_tick = now
 
-
     def get_rate(self):
         """
         Returns the rate in counts per second. Calls L{EWMA.tick} when the

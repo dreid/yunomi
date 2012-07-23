@@ -2,11 +2,7 @@ from math import sqrt
 
 from yunomi.stats.exp_decay_sample import ExponentiallyDecayingSample
 from yunomi.stats.uniform_sample import UniformSample
-from yunomi.stats.snapshot import Snapshot
 
-
-def enum(**enums):
-    return type('Enum', (), enums)
 
 class Histogram(object):
     """
@@ -18,19 +14,36 @@ class Histogram(object):
     DEFAULT_ALPHA = 0.015
     count = 0
     mean = 0
-    sum_of_squares = -1.0 
-    SampleType = enum(UNIFORM = UniformSample(DEFAULT_SAMPLE_SIZE),
-                      BIASED = ExponentiallyDecayingSample(DEFAULT_SAMPLE_SIZE, DEFAULT_ALPHA))
+    sum_of_squares = -1.0
 
     def __init__(self, sample):
         """
         Creates a new instance of a L{Histogram}.
 
-        @type sample: C{Sample}
-        @param sample: an instance of a sample, in this case UNIFORM or BIASED
+        @type sample: L{Sample}
+        @param sample: an instance of L{Sample}.
         """
         self.sample = sample
         self.clear()
+
+    @classmethod
+    def get_biased(klass):
+        """
+        Create a new instance of L{Histogram} that uses an L{ExponentiallyDecayingSample}
+        with sample size L{DEFAULT_SAMPLE_SIZE} and alpha L{DEFAULT_ALPHA}.
+
+        @return L{Histogram}
+        """
+        return klass(ExponentiallyDecayingSample(klass.DEFAULT_SAMPLE_SIZE, klass.DEFAULT_ALPHA))
+
+    @classmethod
+    def get_uniform(klass):
+        """
+        Create a new instance of L{Histogram that uses an L{UniformSample}
+        with sample size L{DEFAULT_SAMPLE_SIZE}.
+
+        """
+        return klass(UniformSample(klass.DEFAULT_SAMPLE_SIZE))
 
     def clear(self):
         """
@@ -136,7 +149,7 @@ class Histogram(object):
     def get_snapshot(self):
         """
         Returns a snapshot of the current set of values in the histogram.
- 
+
         @rtype: L{Snapshot}
         @return: the snapshot of the current values
         """

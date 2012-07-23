@@ -11,7 +11,7 @@ class Timer(object):
     statistics, plus throughput statistics via L{Meter}.
     """
 
-    def __init__(self, clock = time):
+    def __init__(self, clock=time):
         """
         Creates a new L{Timer} instance.
 
@@ -20,7 +20,7 @@ class Timer(object):
                       seconds since the epoch; can be used with other time
                       units, or with the twisted clock for our testing purposes
         """
-        self.histogram = Histogram(Histogram.SampleType.BIASED)
+        self.histogram = Histogram.get_biased()
         self.clock = clock
         self.meter = Meter("calls", self.clock)
 

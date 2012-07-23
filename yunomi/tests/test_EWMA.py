@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest2 import TestCase
 
 from twisted.internet.task import Clock
 
@@ -6,7 +6,7 @@ from yunomi.stats.ewma import EWMA
 
 
 class EWMATests(TestCase):
-    
+
     def setUp(self):
         self.twisted_clock = Clock()
 

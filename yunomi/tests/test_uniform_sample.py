@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest2 import TestCase
 
 from yunomi.stats.uniform_sample import UniformSample
 from yunomi.stats.snapshot import Snapshot

@@ -16,11 +16,6 @@ class MetricsRegistry(object):
     def __init__(self):
         """
         Creates a new L{MetricsRegistry} instance.
-
-        @type clock: C{function}
-        @param clock: the function used to return the current time, default to
-                      seconds since the epoch; can be used with other time
-                      units, or with the twisted clock for our testing purposes
         """
         self._timers = {}
         self._meters = {}

@@ -20,8 +20,9 @@ class Histogram(object):
         """
         Creates a new instance of a L{Histogram}.
 
-        @type sample: L{Sample}
-        @param sample: an instance of L{Sample}.
+        @type sample: L{ExponentiallyDecayingSample} or L{UniformSample}
+        @param sample: an instance of L{ExponentiallyDecayingSample} or
+                       L{UniformSample}
         """
         self.sample = sample
         self.clear()
@@ -32,14 +33,14 @@ class Histogram(object):
         Create a new instance of L{Histogram} that uses an L{ExponentiallyDecayingSample}
         with sample size L{DEFAULT_SAMPLE_SIZE} and alpha L{DEFAULT_ALPHA}.
 
-        @return L{Histogram}
+        @return: L{Histogram}
         """
         return klass(ExponentiallyDecayingSample(klass.DEFAULT_SAMPLE_SIZE, klass.DEFAULT_ALPHA))
 
     @classmethod
     def get_uniform(klass):
         """
-        Create a new instance of L{Histogram that uses an L{UniformSample}
+        Create a new instance of L{Histogram} that uses an L{UniformSample}
         with sample size L{DEFAULT_SAMPLE_SIZE}.
 
         """

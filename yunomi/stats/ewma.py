@@ -92,7 +92,7 @@ class EWMA(object):
     def get_rate(self):
         """
         Returns the rate in counts per second. Calls L{EWMA.tick} when the
-        elapsed time is greater than L{EWMA._interval}.
+        elapsed time is greater than L{EWMA.INTERVAL}.
 
         @rtype: C{float}
         @return: the rate

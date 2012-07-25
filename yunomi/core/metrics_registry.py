@@ -27,7 +27,7 @@ class MetricsRegistry(object):
         self._counters = {}
         self._histograms = {}
 
-    def get_counter(self, key):
+    def counter(self, key):
         """
         Gets a counter based on a key, creates a new one if it does not exist.
 
@@ -40,7 +40,7 @@ class MetricsRegistry(object):
             self._counters[key] = Counter()
         return self._counters[key]
 
-    def get_histogram(self, key, biased=False):
+    def histogram(self, key, biased=False):
         """
         Gets a histogram based on a key, creates a new one if it does not exist.
 
@@ -57,7 +57,7 @@ class MetricsRegistry(object):
                 
         return self._histograms[key]
 
-    def get_meter(self, key):
+    def meter(self, key):
         """
         Gets a meter based on a key, creates a new one if it does not exist.
 
@@ -70,7 +70,7 @@ class MetricsRegistry(object):
             self._meters[key] = Meter()
         return self._meters[key]
 
-    def get_timer(self, key):
+    def timer(self, key):
         """
         Gets a timer based on a key, creates a new one if it does not exist.
 
@@ -165,8 +165,8 @@ class MetricsRegistry(object):
 
 _global_registry= MetricsRegistry()
 
-counter = _global_registry.get_counter
-histogram = _global_registry.get_histogram
-meter = _global_registry.get_meter
-timer = _global_registry.get_timer
+counter = _global_registry.counter
+histogram = _global_registry.histogram
+meter = _global_registry.meter
+timer = _global_registry.timer
 dump_metrics = _global_registry.dump_metrics

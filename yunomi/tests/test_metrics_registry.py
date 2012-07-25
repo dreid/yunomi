@@ -12,10 +12,10 @@ class MetricsRegistryTests(TestCase):
         self.assertEqual(len(self.registry.dump_metrics()), 0)
 
     def test_getters_create_metrics(self):
-        self.registry.get_counter("counter")
-        self.registry.get_histogram("histogram")
-        self.registry.get_meter("meter")
-        self.registry.get_timer("timer")
+        self.registry.counter("counter")
+        self.registry.histogram("histogram")
+        self.registry.meter("meter")
+        self.registry.timer("timer")
 
         dump = self.registry.dump_metrics()
 

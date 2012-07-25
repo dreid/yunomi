@@ -13,7 +13,7 @@ class MetricsRegistry(object):
     a reference back to its service. The service would create a
     L{MetricsRegistry} to manage all of its metrics tools.
     """
-    def __init__(self, clock=time):
+    def __init__(self):
         """
         Creates a new L{MetricsRegistry} instance.
 
@@ -26,10 +26,6 @@ class MetricsRegistry(object):
         self._meters = {}
         self._counters = {}
         self._histograms = {}
-
-        self.clock = clock
-
-        self._time_started = self.clock()
 
     def get_counter(self, key):
         """

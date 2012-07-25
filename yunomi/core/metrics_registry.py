@@ -67,7 +67,7 @@ class MetricsRegistry(object):
         @return: L{Meter}
         """
         if key not in self._meters:
-            self._meters[key] = Meter("stats")
+            self._meters[key] = Meter()
         return self._meters[key]
 
     def get_timer(self, key):

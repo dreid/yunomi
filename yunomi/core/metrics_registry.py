@@ -9,17 +9,27 @@ from yunomi.core.timer import Timer
 class MetricsRegistry(object):
     """
     A single interface used to gather metrics on a service. It keeps track of
-    all the relevant Counters, Meters, Histograms, and Timers for a certain
-    service. It does not have a reference to its service. The service would
-    create a C{MetricsRegistry} to manage all of its metrics tools.
+    all the relevant Counters, Meters, Histograms, and Timers. It does not have
+    a reference back to its service. The service would create a
+    L{MetricsRegistry} to manage all of its metrics tools.
     """
-    def __init__(self, clock=time)
+    def __init__(self, clock=time):
+        """
+        Creates a new L{MetricsRegistry} instance.
+
+        @type clock: C{function}
+        @param clock: the function used to return the current time, default to
+                      seconds since the epoch; can be used with other time
+                      units, or with the twisted clock for our testing purposes
+        """
         self._timers = {}
         self._meters = {}
         self._counters = {}
         self._histograms = {}
 
-        self._time_started = time_started or time.time()
+        self.clock = clock
+
+        self._time_started = self.clock()
 
     def get_counter(self, key):
         """
@@ -61,7 +71,7 @@ class MetricsRegistry(object):
         @return: L{Meter}
         """
         if key not in self._meters:
-            self._meters[key] = Meter()
+            self._meters[key] = Meter("stats")
         return self._meters[key]
 
     def get_timer(self, key):
@@ -77,7 +87,7 @@ class MetricsRegistry(object):
             self._timers[key] = Timer()
         return self._timers[key]
 
-    def get_metrics(self):
+    def dump_metrics(self):
         """
         Formats all the metrics into dicts, and returns a list of all of them
 
@@ -95,7 +105,7 @@ class MetricsRegistry(object):
                                 ("15m_rate", timer.get_fifteen_minute_rate()),
                                 ("5m_rate", timer.get_five_minute_rate()),
                                 ("1m_rate", timer.get_one_minute_rate()),
-                                ("mean_rate", timer.get_mean_rate())):
+                                ("mean_rate", timer.get_mean_rate()),
                                 ("75_percentile", snapshot.get_75th_percentile()),
                                 ("98_percentile", snapshot.get_98th_percentile()),
                                 ("99_percentile", snapshot.get_99th_percentile()),
@@ -147,7 +157,7 @@ class MetricsRegistry(object):
             val = counter.get_count()
             _new_metric = {
                 "type": "int",
-                "name": key,
+                "name": k,
                 "value": val
             }
             metrics.append(_new_metric)
@@ -155,3 +165,12 @@ class MetricsRegistry(object):
         # alphabetize
         metrics.sort(key=lambda x: x["name"])
         return metrics
+
+
+_global_registry= MetricsRegistry()
+
+counter = _global_registry.get_counter
+histogram = _global_registry.get_histogram
+meter = _global_registry.get_meter
+timer = _global_registry.get_timer
+dump_metrics = _global_registry.dump_metrics

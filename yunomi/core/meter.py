@@ -12,7 +12,7 @@ class Meter(object):
     """
     INTERVAL = 5
 
-    def __init__(self, event_type, clock = time):
+    def __init__(self, event_type="", clock=time):
         """
         Creates a new L{Meter} instance.
 

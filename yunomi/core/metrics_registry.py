@@ -13,7 +13,7 @@ class MetricsRegistry(object):
     a reference back to its service. The service would create a
     L{MetricsRegistry} to manage all of its metrics tools.
     """
-    def __init__(self):
+    def __init__(self, clock=time):
         """
         Creates a new L{MetricsRegistry} instance.
         """
@@ -21,6 +21,8 @@ class MetricsRegistry(object):
         self._meters = {}
         self._counters = {}
         self._histograms = {}
+
+        self._clock = clock
 
     def counter(self, key):
         """
@@ -62,7 +64,7 @@ class MetricsRegistry(object):
         @return: L{Meter}
         """
         if key not in self._meters:
-            self._meters[key] = Meter()
+            self._meters[key] = Meter(clock=self._clock)
         return self._meters[key]
 
     def timer(self, key):
@@ -75,7 +77,7 @@ class MetricsRegistry(object):
         @return: L{Timer}
         """
         if key not in self._timers:
-            self._timers[key] = Timer()
+            self._timers[key] = Timer(clock=self._clock)
         return self._timers[key]
 
     def dump_metrics(self):
@@ -158,10 +160,75 @@ class MetricsRegistry(object):
         return metrics
 
 
-_global_registry= MetricsRegistry()
+_global_registry = MetricsRegistry()
 
 counter = _global_registry.counter
 histogram = _global_registry.histogram
 meter = _global_registry.meter
 timer = _global_registry.timer
 dump_metrics = _global_registry.dump_metrics
+
+def count_calls(fn):
+    """
+    Decorator to track the number of times a function is called.
+
+    @param fn: the decorated function
+    @type fn: C{func}
+    """
+    def wrapper(*args):
+        counter("%s_calls" % fn.__name__).inc()
+        try:
+            fn(*args)
+        except:
+            raise
+    return wrapper
+
+def meter_calls(fn):
+    """
+    Decorator to the rate at which a function is called.
+
+    @param fn: the decorated function
+    @type fn: C{func}
+    """
+    def wrapper(*args):
+        meter("%s_calls" % fn.__name__).mark()
+        try:
+            fn(*args)
+        except:
+            raise
+    return wrapper
+
+def dist_calls(fn):
+    """
+    Decorator to check the distribution of return values of a function.
+
+    @param fn: the decorated function
+    @type fn: C{func}
+    """
+    def wrapper(*args):
+        _histogram = histogram("%s_calls" % fn.__name__)
+        try:
+            rtn = fn(*args)
+            if type(rtn) in (int, float):
+                _histogram.update(rtn)
+        except:
+            raise
+    return wrapper
+
+def time_calls(fn):
+    """
+    Decorator to time the execution of the function.
+
+    @param fn: the decorated function
+    @type fn: C{func}
+    """
+    def wrapper(*args):
+        _timer = timer("%s_calls" % fn.__name__)
+        start = time()
+        try:
+            fn(*args)
+        except:
+            raise
+        finally:
+            _timer.update(time() - start)
+    return wrapper

@@ -1,12 +1,17 @@
 from unittest2 import TestCase
 
-from yunomi.core.metrics_registry import MetricsRegistry
+from twisted.internet.task import Clock
+
+from yunomi.core.metrics_registry import (MetricsRegistry, counter, histogram,
+                                          meter, timer, count_calls,
+                                          meter_calls, dist_calls, time_calls)
 
 
 class MetricsRegistryTests(TestCase):
 
     def setUp(self):
-        self.registry = MetricsRegistry()
+        self.twisted_clock = Clock()
+        self.registry = MetricsRegistry(clock=self.twisted_clock.seconds)
 
     def test_empty_registry(self):
         self.assertEqual(len(self.registry.dump_metrics()), 0)
@@ -33,3 +38,22 @@ class MetricsRegistryTests(TestCase):
         for stat in dump:
             self.assertTrue(stat["name"] in metric_names)
             self.assertEqual(stat["value"], 0)
+
+    def test_count_calls_decorator(self):
+        @count_calls
+        def test():
+            pass
+
+        for i in xrange(10):
+            test()
+        self.assertEqual(counter("test_calls").get_count(), 10)
+
+    def test_meter_calls_decorator(self):
+        @meter_calls
+        def test():
+            pass
+
+        for i in xrange(10):
+            test()
+            self.twisted_clock.advance(1)
+        self.assertAlmostEqual(meter("test_calls").get_mean_rate(), 1.0)

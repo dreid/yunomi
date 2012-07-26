@@ -172,8 +172,11 @@ def count_calls(fn):
     """
     Decorator to track the number of times a function is called.
 
-    @param fn: the decorated function
+    @param fn: the function to be decorated
     @type fn: C{func}
+
+    @return: the decorated function
+    @rtype: C{func}
     """
     def wrapper(*args):
         counter("%s_calls" % fn.__name__).inc()
@@ -187,8 +190,11 @@ def meter_calls(fn):
     """
     Decorator to the rate at which a function is called.
 
-    @param fn: the decorated function
+    @param fn: the function to be decorated
     @type fn: C{func}
+
+    @return: the decorated function
+    @rtype: C{func}
     """
     def wrapper(*args):
         meter("%s_calls" % fn.__name__).mark()
@@ -202,8 +208,11 @@ def dist_calls(fn):
     """
     Decorator to check the distribution of return values of a function.
 
-    @param fn: the decorated function
+    @param fn: the function to be decorated
     @type fn: C{func}
+
+    @return: the decorated function
+    @rtype: C{func}
     """
     def wrapper(*args):
         _histogram = histogram("%s_calls" % fn.__name__)
@@ -219,8 +228,11 @@ def time_calls(fn):
     """
     Decorator to time the execution of the function.
 
-    @param fn: the decorated function
+    @param fn: the function to be decorated
     @type fn: C{func}
+
+    @return: the decorated function
+    @rtype: C{func}
     """
     def wrapper(*args):
         _timer = timer("%s_calls" % fn.__name__)

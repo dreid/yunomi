@@ -55,5 +55,5 @@ class MetricsRegistryTests(TestCase):
 
         for i in xrange(10):
             test()
-            self.twisted_clock.advance(1)
+            #some kind of timing thing here
         self.assertAlmostEqual(meter("test_calls").get_mean_rate(), 1.0)

@@ -68,13 +68,36 @@ class MetricsRegistryTests(TestCase):
 
         for i in xrange(1, 11):
             test(i)
-        snapshot = histogram("test_calls").get_snapshot()
-        self.assertAlmostEqual(histogram("test_calls").get_mean(), 5.5)
-        self.assertEqual(histogram("test_calls").get_max(), 10)
-        self.assertEqual(histogram("test_calls").get_min(), 1)
-        self.assertAlmostEqual(histogram("test_calls").get_std_dev(), 3.02765, places=5)
-        self.assertAlmostEqual(histogram("test_calls").get_variance(), 9.16667, places=5)
+
+        _histogram = histogram("test_calls")
+        snapshot = _histogram.get_snapshot()
+        self.assertAlmostEqual(_histogram.get_mean(), 5.5)
+        self.assertEqual(_histogram.get_max(), 10)
+        self.assertEqual(_histogram.get_min(), 1)
+        self.assertAlmostEqual(_histogram.get_std_dev(), 3.02765, places=5)
+        self.assertAlmostEqual(_histogram.get_variance(), 9.16667, places=5)
         self.assertAlmostEqual(snapshot.get_75th_percentile(), 8.25)
         self.assertAlmostEqual(snapshot.get_98th_percentile(), 10.0)
         self.assertAlmostEqual(snapshot.get_99th_percentile(), 10.0)
         self.assertAlmostEqual(snapshot.get_999th_percentile(), 10.0)
+
+    
+    @mock.patch("yunomi.core.metrics_registry.time")
+    def test_time_calls_decorator(self, time_mock):
+        time_mock.return_value = 0.0
+        @time_calls
+        def test():
+            time_mock.return_value += 1.0
+
+        for i in xrange(10):
+            test()
+        _timer = timer("test_calls")
+        snapshot = _timer.get_snapshot()
+        self.assertEqual(_timer.get_count(), 10)
+        self.assertEqual(_timer.get_max(), 1)
+        self.assertEqual(_timer.get_min(), 1)
+        self.assertAlmostEqual(_timer.get_std_dev(), 0)
+        self.assertAlmostEqual(snapshot.get_75th_percentile(), 1.0)
+        self.assertAlmostEqual(snapshot.get_98th_percentile(), 1.0)
+        self.assertAlmostEqual(snapshot.get_99th_percentile(), 1.0)
+        self.assertAlmostEqual(snapshot.get_999th_percentile(), 1.0)

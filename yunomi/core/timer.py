@@ -1,5 +1,3 @@
-from time import time
-
 from yunomi.stats.snapshot import Snapshot
 from yunomi.core.histogram import Histogram
 from yunomi.core.meter import Meter

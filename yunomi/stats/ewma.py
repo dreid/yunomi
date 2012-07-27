@@ -11,7 +11,7 @@ class EWMA(object):
     """
     INTERVAL = 5
 
-    def __init__(self, period, interval=None, clock = time):
+    def __init__(self, period, interval=None):
         """
         Create a new EWMA with a specific smoothing constant.
 
@@ -25,11 +25,10 @@ class EWMA(object):
         self._interval = (interval or EWMA.INTERVAL)
         self._uncounted = 0.0
         self._rate = 0.0
-        self.clock = clock
-        self._last_tick = self.clock()
+        self._last_tick = time()
 
     @classmethod
-    def one_minute_EWMA(klass, clock = time):
+    def one_minute_EWMA(klass):
         """
         Creates a new EWMA which is equivalent to the UNIX one minute load
         average.
@@ -37,10 +36,10 @@ class EWMA(object):
         @rtype: L{EWMA}
         @return: a one-minute EWMA
         """
-        return klass(60, clock = clock)
+        return klass(60)
 
     @classmethod
-    def five_minute_EWMA(klass, clock = time):
+    def five_minute_EWMA(klass):
         """
         Creates a new EWMA which is equivalent to the UNIX five minute load
         average.
@@ -48,10 +47,10 @@ class EWMA(object):
         @rtype: L{EWMA}
         @return: a five-minute EWMA
         """
-        return klass(300, clock = clock)
+        return klass(300)
 
     @classmethod
-    def fifteen_minute_EWMA(klass, clock = time):
+    def fifteen_minute_EWMA(klass):
         """
         Creates a new EWMA which is equivalent to the UNIX fifteen minute load
         average.
@@ -59,7 +58,7 @@ class EWMA(object):
         @rtype: L{EWMA}
         @return: a fifteen-minute EWMA
         """
-        return klass(900, clock = clock)
+        return klass(900)
 
     def update(self, value):
         """
@@ -75,11 +74,11 @@ class EWMA(object):
         Mark the passage of time and decay the current rate accordingly.
         """
         prev = self._last_tick
-        now = self.clock()
+        now = time()
         interval = now - prev
 
         instant_rate = self._uncounted / interval
-        self._uncounted = 0.0
+        self._uncounted = 0
 
         if self.initialized:
             self._rate += (self._alpha(interval) * (instant_rate - self._rate))
@@ -97,7 +96,7 @@ class EWMA(object):
         @rtype: C{float}
         @return: the rate
         """
-        if self.clock() - self._last_tick >= self._interval:
+        if time() - self._last_tick >= self._interval:
             self.tick()
         return self._rate
 

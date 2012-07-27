@@ -11,18 +11,12 @@ class Timer(object):
     statistics, plus throughput statistics via L{Meter}.
     """
 
-    def __init__(self, clock=time):
+    def __init__(self):
         """
         Creates a new L{Timer} instance.
-
-        @type clock: C{function}
-        @param clock: the function used to return the current time, default to
-                      seconds since the epoch; can be used with other time
-                      units, or with the twisted clock for our testing purposes
         """
         self.histogram = Histogram.get_biased()
-        self.clock = clock
-        self.meter = Meter("calls", self.clock)
+        self.meter = Meter("calls")
 
     def clear(self):
         """

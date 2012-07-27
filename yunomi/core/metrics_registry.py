@@ -64,7 +64,7 @@ class MetricsRegistry(object):
         @return: L{Meter}
         """
         if key not in self._meters:
-            self._meters[key] = Meter(clock=self._clock)
+            self._meters[key] = Meter()
         return self._meters[key]
 
     def timer(self, key):
@@ -77,7 +77,7 @@ class MetricsRegistry(object):
         @return: L{Timer}
         """
         if key not in self._timers:
-            self._timers[key] = Timer(clock=self._clock)
+            self._timers[key] = Timer()
         return self._timers[key]
 
     def dump_metrics(self):
@@ -204,7 +204,7 @@ def meter_calls(fn):
             raise
     return wrapper
 
-def dist_calls(fn):
+def hist_calls(fn):
     """
     Decorator to check the distribution of return values of a function.
 

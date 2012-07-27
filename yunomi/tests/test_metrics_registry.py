@@ -1,10 +1,11 @@
+import mock
 from unittest2 import TestCase
 
 from twisted.internet.task import Clock
 
 from yunomi.core.metrics_registry import (MetricsRegistry, counter, histogram,
                                           meter, timer, count_calls,
-                                          meter_calls, dist_calls, time_calls)
+                                          meter_calls, hist_calls, time_calls)
 
 
 class MetricsRegistryTests(TestCase):
@@ -48,12 +49,32 @@ class MetricsRegistryTests(TestCase):
             test()
         self.assertEqual(counter("test_calls").get_count(), 10)
 
-    def test_meter_calls_decorator(self):
+    @mock.patch("yunomi.core.meter.time")
+    def test_meter_calls_decorator(self, time_mock):
+        time_mock.return_value = 0
         @meter_calls
         def test():
             pass
 
         for i in xrange(10):
             test()
-            #some kind of timing thing here
+        time_mock.return_value = 10
         self.assertAlmostEqual(meter("test_calls").get_mean_rate(), 1.0)
+
+    def test_hist_calls_decorator(self):
+        @hist_calls
+        def test(n):
+            return n
+
+        for i in xrange(1, 11):
+            test(i)
+        snapshot = histogram("test_calls").get_snapshot()
+        self.assertAlmostEqual(histogram("test_calls").get_mean(), 5.5)
+        self.assertEqual(histogram("test_calls").get_max(), 10)
+        self.assertEqual(histogram("test_calls").get_min(), 1)
+        self.assertAlmostEqual(histogram("test_calls").get_std_dev(), 3.02765, places=5)
+        self.assertAlmostEqual(histogram("test_calls").get_variance(), 9.16667, places=5)
+        self.assertAlmostEqual(snapshot.get_75th_percentile(), 8.25)
+        self.assertAlmostEqual(snapshot.get_98th_percentile(), 10.0)
+        self.assertAlmostEqual(snapshot.get_99th_percentile(), 10.0)
+        self.assertAlmostEqual(snapshot.get_999th_percentile(), 10.0)

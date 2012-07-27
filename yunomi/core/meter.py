@@ -12,24 +12,19 @@ class Meter(object):
     """
     INTERVAL = 5
 
-    def __init__(self, event_type="", clock=time):
+    def __init__(self, event_type=""):
         """
         Creates a new L{Meter} instance.
 
         @type event_type: C{str}
         @param event_type: the plural name of the event the meter is measuring
                            (e.g., I{"requests"})
-        @type clock: C{function}
-        @param clock: the function used to return the current time, default to
-                      seconds since the epoch; to be used with other time
-                      units, or with the twisted clock for our testing purposes
         """
         self.event_type = event_type
-        self.clock = clock
-        self.start_time = self.clock()
-        self._m1_rate = EWMA.one_minute_EWMA(self.clock)
-        self._m5_rate = EWMA.five_minute_EWMA(self.clock)
-        self._m15_rate = EWMA.fifteen_minute_EWMA(self.clock)
+        self.start_time = time()
+        self._m1_rate = EWMA.one_minute_EWMA()
+        self._m5_rate = EWMA.five_minute_EWMA()
+        self._m15_rate = EWMA.fifteen_minute_EWMA()
         self._count = 0
 
     def get_event_type(self):
@@ -108,5 +103,5 @@ class Meter(object):
         if self._count == 0:
             return 0.0
         else:
-            elapsed = self.clock() - self.start_time
+            elapsed = time() - self.start_time
             return float(self._count) / elapsed

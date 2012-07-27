@@ -1,7 +1,5 @@
 from unittest2 import TestCase
 
-from twisted.internet.task import Clock
-
 from yunomi.core.timer import Timer
 from yunomi.stats.snapshot import Snapshot
 
@@ -9,7 +7,7 @@ from yunomi.stats.snapshot import Snapshot
 class TimerTests(TestCase):
 
     def setUp(self):
-        self.timer = Timer(Clock().seconds)
+        self.timer = Timer()
 
     def test_blank_timer(self):
         self.assertEqual(self.timer.get_count(), 0)

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="yunomi",
-    version="0.1.1",
+    version="0.2.0",
     description="A Python metrics library with rate, statistical distribution, and timing information.",
     author="richzeng",
     author_email="richie.zeng@rackspace.com",

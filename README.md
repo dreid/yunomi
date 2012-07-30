@@ -31,6 +31,7 @@ A useful combination of the Meter and the Histogram letting you measure the rate
 The simplest and easiest way to use the yunomi library.
 #### Counter
 You can use the 'count_calls' decorator to count the number of times a function is called.
+
     >>> from yunomi import counter, count_calls
     >>> @count_calls
     ... def test():
@@ -44,6 +45,7 @@ You can use the 'count_calls' decorator to count the number of times a function 
 
 #### Timer
 You can use the 'time_calls' decorator to time the execution of a function and get distributtion data from it.
+
     >>> import time
     >>> from yunomi import timer, time_calls
     >>> @time_calls

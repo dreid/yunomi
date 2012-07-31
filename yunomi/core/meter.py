@@ -27,6 +27,16 @@ class Meter(object):
         self._m15_rate = EWMA.fifteen_minute_EWMA()
         self._count = 0
 
+    def clear(self):
+        """
+        Resets 
+        """
+        self.start_time = time()
+        self._count = 0
+        self._m1_rate = EWMA.one_minute_EWMA()
+        self._m5_rate = EWMA.five_minute_EWMA()
+        self._m15_rate = EWMA.fifteen_minute_EWMA()
+
     def get_event_type(self):
         """
         Returns the event type.

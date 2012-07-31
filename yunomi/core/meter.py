@@ -29,7 +29,7 @@ class Meter(object):
 
     def clear(self):
         """
-        Resets 
+        Resets the meter.
         """
         self.start_time = time()
         self._count = 0

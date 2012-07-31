@@ -6,6 +6,7 @@ As in:
 
 ![Y U NO MEASURE IT](http://cdn.memegenerator.net/instances/400x/22184566.jpg)
 
+    pip install yunomi
 
 A Python port of the core portion of a [Java Metrics library by Coda Hale](http://metrics.codahale.com/)
 
@@ -29,7 +30,7 @@ A useful combination of the Meter and the Histogram letting you measure the rate
 ## Examples
 ### Decorators
 The simplest and easiest way to use the yunomi library.
-#### Counter
+##### Counter
 You can use the 'count_calls' decorator to count the number of times a function is called.
 
     >>> from yunomi import counter, count_calls
@@ -43,7 +44,7 @@ You can use the 'count_calls' decorator to count the number of times a function 
     >>> print counter("test_calls").get_count()
     10
 
-#### Timer
+##### Timer
 You can use the 'time_calls' decorator to time the execution of a function and get distributtion data from it.
 
     >>> import time

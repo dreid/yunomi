@@ -1,4 +1,5 @@
 from time import time
+from functools import wraps
 
 from yunomi.core.counter import Counter
 from yunomi.core.histogram import Histogram
@@ -51,7 +52,7 @@ class MetricsRegistry(object):
                 self._histograms[key] = Histogram.get_biased()
             else:
                 self._histograms[key] = Histogram.get_uniform()
-                
+
         return self._histograms[key]
 
     def meter(self, key):
@@ -178,10 +179,11 @@ def count_calls(fn):
     @return: the decorated function
     @rtype: C{func}
     """
+    @wraps(fn)
     def wrapper(*args):
         counter("%s_calls" % fn.__name__).inc()
         try:
-            fn(*args)
+            return fn(*args)
         except:
             raise
     return wrapper
@@ -196,10 +198,11 @@ def meter_calls(fn):
     @return: the decorated function
     @rtype: C{func}
     """
+    @wraps(fn)
     def wrapper(*args):
         meter("%s_calls" % fn.__name__).mark()
         try:
-            fn(*args)
+            return fn(*args)
         except:
             raise
     return wrapper
@@ -214,12 +217,14 @@ def hist_calls(fn):
     @return: the decorated function
     @rtype: C{func}
     """
+    @wraps(fn)
     def wrapper(*args):
         _histogram = histogram("%s_calls" % fn.__name__)
         try:
             rtn = fn(*args)
             if type(rtn) in (int, float):
                 _histogram.update(rtn)
+            return rtn
         except:
             raise
     return wrapper
@@ -234,11 +239,12 @@ def time_calls(fn):
     @return: the decorated function
     @rtype: C{func}
     """
+    @wraps(fn)
     def wrapper(*args):
         _timer = timer("%s_calls" % fn.__name__)
         start = time()
         try:
-            fn(*args)
+            return fn(*args)
         except:
             raise
         finally:

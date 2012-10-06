@@ -61,6 +61,7 @@ class MetricsRegistryTests(TestCase):
         time_mock.return_value = 10
         self.assertAlmostEqual(meter("test_calls").get_mean_rate(), 1.0)
 
+
     def test_hist_calls_decorator(self):
         @hist_calls
         def test(n):
@@ -81,7 +82,6 @@ class MetricsRegistryTests(TestCase):
         self.assertAlmostEqual(snapshot.get_99th_percentile(), 10.0)
         self.assertAlmostEqual(snapshot.get_999th_percentile(), 10.0)
 
-    
     @mock.patch("yunomi.core.metrics_registry.time")
     def test_time_calls_decorator(self, time_mock):
         time_mock.return_value = 0.0
@@ -101,3 +101,75 @@ class MetricsRegistryTests(TestCase):
         self.assertAlmostEqual(snapshot.get_98th_percentile(), 1.0)
         self.assertAlmostEqual(snapshot.get_99th_percentile(), 1.0)
         self.assertAlmostEqual(snapshot.get_999th_percentile(), 1.0)
+
+    def test_count_calls_decorator_returns_original_return_value(self):
+        @count_calls
+        def test():
+            return 1
+        self.assertEqual(test(), 1)
+
+    def test_meter_calls_decorator_returns_original_return_value(self):
+        @meter_calls
+        def test():
+            return 1
+        self.assertEqual(test(), 1)
+
+    def test_hist_calls_decorator_returns_original_return_value(self):
+        @hist_calls
+        def test():
+            return 1
+        self.assertEqual(test(), 1)
+
+    def test_time_calls_decorator_returns_original_return_value(self):
+        @time_calls
+        def test():
+            return 1
+        self.assertEqual(test(), 1)
+
+    def test_count_calls_decorator_keeps_function_name(self):
+        @count_calls
+        def test():
+            pass
+        self.assertEqual(test.__name__, 'test')
+
+    def test_meter_calls_decorator_keeps_function_name(self):
+        @meter_calls
+        def test():
+            pass
+        self.assertEqual(test.__name__, 'test')
+
+    def test_hist_calls_decorator_keeps_function_name(self):
+        @hist_calls
+        def test():
+            pass
+        self.assertEqual(test.__name__, 'test')
+
+    def test_time_calls_decorator_keeps_function_name(self):
+        @time_calls
+        def test():
+            pass
+        self.assertEqual(test.__name__, 'test')
+
+    def test_count_calls_decorator_propagates_errors(self):
+        @count_calls
+        def test():
+            raise Exception('what')
+        self.assertRaises(Exception, test)
+
+    def test_meter_calls_decorator_propagates_errors(self):
+        @meter_calls
+        def test():
+            raise Exception('what')
+        self.assertRaises(Exception, test)
+
+    def test_hist_calls_decorator_propagates_errors(self):
+        @hist_calls
+        def test():
+            raise Exception('what')
+        self.assertRaises(Exception, test)
+
+    def test_time_calls_decorator_propagates_errors(self):
+        @time_calls
+        def test():
+            raise Exception('what')
+        self.assertRaises(Exception, test)

@@ -1,6 +1,6 @@
 # YUNOMI - Y U NO MEASURE IT
 
-[![Build Status](https://secure.travis-ci.org/richzeng/yunomi.png?branch=master)](http://travis-ci.org/richzeng/yunomi)
+[![Build Status](https://secure.travis-ci.org/dreid/yunomi.png?branch=master)](http://travis-ci.org/dreid/yunomi)
 
 As in:
 

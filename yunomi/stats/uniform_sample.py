@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import
+
 from random import randint
 
 from yunomi.compat import xrange

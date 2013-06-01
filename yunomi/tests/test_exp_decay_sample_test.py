@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import
+
 from unittest2 import TestCase
 
 from twisted.internet.task import Clock

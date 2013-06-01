@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import
+
 import mock
 from unittest2 import TestCase
 

@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import
+
 from time import time
 from functools import wraps
 

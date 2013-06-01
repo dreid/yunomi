@@ -2,7 +2,7 @@ from math import exp
 from time import time
 from random import random
 
-from snapshot import Snapshot
+from yunomi.stats.snapshot import Snapshot
 
 
 class ExponentiallyDecayingSample(object):

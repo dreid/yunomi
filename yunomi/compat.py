@@ -23,6 +23,6 @@ else:
         return d.items()
 
 
-__init__ = [
+__all__ = [
     _PY3, xrange, dict_item_iter
 ]

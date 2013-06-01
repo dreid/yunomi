@@ -1,6 +1,7 @@
 import mock
 from unittest2 import TestCase
 
+from yunomi.compat import xrange
 from yunomi.core.meter import Meter
 
 

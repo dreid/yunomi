@@ -1,7 +1,7 @@
 from unittest2 import TestCase
 
+from yunomi.compat import xrange
 from yunomi.stats.uniform_sample import UniformSample
-from yunomi.stats.snapshot import Snapshot
 
 
 class UniformSampleTests(TestCase):

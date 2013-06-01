@@ -3,6 +3,7 @@ from unittest2 import TestCase
 
 from twisted.internet.task import Clock
 
+from yunomi.compat import xrange
 from yunomi.core.metrics_registry import (MetricsRegistry, counter, histogram,
                                           meter, timer, count_calls,
                                           meter_calls, hist_calls, time_calls)

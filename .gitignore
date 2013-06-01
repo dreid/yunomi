@@ -2,3 +2,7 @@
 _trial_temp
 build
 dist
+.tox
+tox.ini
+yunomi.egg-info
+.coverage

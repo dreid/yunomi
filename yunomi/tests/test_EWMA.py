@@ -1,8 +1,9 @@
+from __future__ import division, absolute_import
+
 import mock
 from unittest2 import TestCase
 
-from twisted.internet.task import Clock
-
+from yunomi.compat import xrange
 from yunomi.stats.ewma import EWMA
 
 

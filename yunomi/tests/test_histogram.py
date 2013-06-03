@@ -1,5 +1,8 @@
+from __future__ import division, absolute_import
+
 from unittest2 import TestCase
 
+from yunomi.compat import xrange
 from yunomi.core.histogram import Histogram
 
 

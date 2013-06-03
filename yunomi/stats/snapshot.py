@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import
+
 from math import floor
 
 
@@ -19,7 +21,7 @@ class Snapshot(object):
         @type values: C{dict}
         @param values: an unordered set of values in the sample
         """
-        self.values = values[:]
+        self.values = list(values)
         self.values.sort()
 
     def get_value(self, quantile):

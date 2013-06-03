@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import
+
 from yunomi.stats.snapshot import Snapshot
 from yunomi.core.histogram import Histogram
 from yunomi.core.meter import Meter

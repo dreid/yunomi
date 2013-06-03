@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import
+
 from yunomi.core.metrics_registry import (MetricsRegistry, counter, histogram,
                                           meter, timer, dump_metrics,
                                           count_calls, meter_calls, hist_calls,

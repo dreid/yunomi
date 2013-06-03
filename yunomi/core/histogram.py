@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import
+
 from math import sqrt
 
 from yunomi.stats.exp_decay_sample import ExponentiallyDecayingSample

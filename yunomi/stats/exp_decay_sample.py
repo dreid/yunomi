@@ -1,8 +1,10 @@
+from __future__ import division, absolute_import
+
 from math import exp
 from time import time
 from random import random
 
-from snapshot import Snapshot
+from yunomi.stats.snapshot import Snapshot
 
 
 class ExponentiallyDecayingSample(object):
@@ -123,10 +125,8 @@ class ExponentiallyDecayingSample(object):
             self.next_scale_time = now + self.RESCALE_THRESHOLD
             old_start_time = self.start_time
             self.start_time = self.clock()
-            keys = self.values.keys()
-            keys.sort()
 
-            for key in keys:
+            for key in sorted(self.values.keys()):
                 value = self.values[key]
                 del self.values[key]
                 self.values[key * exp(-self.alpha * (self.start_time - old_start_time))] = value

@@ -1,6 +1,9 @@
+from __future__ import division, absolute_import
+
 import mock
 from unittest2 import TestCase
 
+from yunomi.compat import xrange
 from yunomi.core.meter import Meter
 
 

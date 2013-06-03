@@ -8,5 +8,4 @@ setup(
     author_email="richie.zeng@rackspace.com",
     url="https://github.com/richzeng/yunomi",
     packages=["yunomi", "yunomi.core", "yunomi.stats"],
-    install_requires=["unittest2"]
 )

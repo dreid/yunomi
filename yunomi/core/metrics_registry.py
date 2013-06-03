@@ -1,6 +1,9 @@
+from __future__ import division, absolute_import
+
 from time import time
 from functools import wraps
 
+from yunomi.compat import dict_item_iter
 from yunomi.core.counter import Counter
 from yunomi.core.histogram import Histogram
 from yunomi.core.meter import Meter
@@ -90,7 +93,7 @@ class MetricsRegistry(object):
         metrics = []
 
         # format timed stats
-        for key, timer in self._timers.iteritems():
+        for key, timer in dict_item_iter(self._timers):
             snapshot = timer.get_snapshot()
             for suffix, val in (("avg", timer.get_mean()),
                                 ("max", timer.get_max()),
@@ -113,7 +116,7 @@ class MetricsRegistry(object):
                 metrics.append(_new_metric)
 
         # format meter stats
-        for key, meter in self._meters.iteritems():
+        for key, meter in dict_item_iter(self._meters):
             for suffix, val in (("15m_rate", meter.get_fifteen_minute_rate()),
                                 ("5m_rate", meter.get_five_minute_rate()),
                                 ("1m_rate", meter.get_one_minute_rate()),
@@ -127,7 +130,7 @@ class MetricsRegistry(object):
                 metrics.append(_new_metric)
 
         # format histogram stats
-        for key, histogram in self._histograms.iteritems():
+        for key, histogram in dict_item_iter(self._histograms):
             snapshot = histogram.get_snapshot()
             for suffix, val in (("avg", histogram.get_mean()),
                                 ("max", histogram.get_max()),
@@ -146,7 +149,7 @@ class MetricsRegistry(object):
                 metrics.append(_new_metric)
 
         # format counter stats
-        for key, counter in self._counters.iteritems():
+        for key, counter in dict_item_iter(self._counters):
             k = "_".join([key, "count"])
             val = counter.get_count()
             _new_metric = {

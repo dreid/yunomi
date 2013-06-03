@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import
+
 class Counter(object):
     """
     A counter method that increments and decrements.

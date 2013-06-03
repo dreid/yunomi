@@ -1,3 +1,6 @@
 mock
 unittest2
 Twisted
+pytest
+pytest-cov
+tox

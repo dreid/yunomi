@@ -1,6 +1,9 @@
+from __future__ import division, absolute_import
+
 from random import randint
 
-from snapshot import Snapshot
+from yunomi.compat import xrange
+from yunomi.stats.snapshot import Snapshot
 
 
 class UniformSample(object):

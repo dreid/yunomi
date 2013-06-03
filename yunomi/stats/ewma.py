@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import
+
 from math import exp
 from time import time
 

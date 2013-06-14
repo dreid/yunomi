@@ -7,9 +7,6 @@ class Clock(object):
     """
     rightNow = 0.0
 
-    def __init__(self):
-        self.calls = []
-
     def seconds(self):
         """
         Pretend to be time.time().

@@ -1,5 +1,6 @@
 from __future__ import division, absolute_import
-from threading import RLock
+from threading import Lock
+
 
 class Counter(object):
     """
@@ -10,7 +11,7 @@ class Counter(object):
         Create a new instance of a L{Counter}.
         """
         self._count = 0
-        self._lock = RLock()
+        self._lock = Lock()
 
     def inc(self, n=1):
         """

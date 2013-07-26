@@ -5,29 +5,29 @@ import mock
 from unittest2 import TestCase
 
 from yunomi.core.counter import Counter
-
+from threading import Lock
 
 class CounterTests(TestCase):
     def setUp(self):
-        _RLock_patcher = mock.patch('yunomi.core.counter.RLock')
-        self._lock = _RLock_patcher.start().return_value
-        self.addCleanup(_RLock_patcher.stop)
+        Lock_patcher = mock.patch('yunomi.core.counter.Lock', spec=Lock)
+        self._lock = Lock_patcher.start().return_value
+        self.addCleanup(Lock_patcher.stop)
 
         self._counter = Counter()
 
         self._value_on_enter = []
 
-        def _enter():
+        def enter():
             self._value_on_enter.append(self._counter.get_count())
 
-        self._lock.__enter__.side_effect = _enter
+        self._lock.__enter__.side_effect = enter
 
         self._value_on_exit = []
 
-        def _exit(*args, **kwargs):
+        def exit(*args, **kwargs):
             self._value_on_exit.append(self._counter.get_count())
 
-        self._lock.__exit__.side_effect = _exit
+        self._lock.__exit__.side_effect = exit
 
     def test_starts_at_zero(self):
         self.assertEqual(self._counter.get_count(), 0)
@@ -53,7 +53,7 @@ class CounterTests(TestCase):
         self._counter.clear()
         self.assertEqual(self._counter.get_count(), 0)
 
-    def assert_lock_acquired(self, before, after, f, *args, **kwargs):
+    def _assert_lock_acquired(self, before, after, f, *args, **kwargs):
         """
         All locks should be used as context managers so this asserts that
         C{__enter__} and C{__exit__} are called.  And that at the time they are
@@ -68,10 +68,10 @@ class CounterTests(TestCase):
         self.assertEqual(self._value_on_exit, [after])
 
     def test_inc_locks(self):
-        self.assert_lock_acquired(0, 10, self._counter.inc, 10)
+        self._assert_lock_acquired(0, 10, self._counter.inc, 10)
 
     def test_dec_locks(self):
-        self.assert_lock_acquired(0, -10, self._counter.dec, 10)
+        self._assert_lock_acquired(0, -10, self._counter.dec, 10)
 
     def test_clear_locks(self):
-        self.assert_lock_acquired(0, 0, self._counter.clear)
+        self._assert_lock_acquired(0, 0, self._counter.clear)

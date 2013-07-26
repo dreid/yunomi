@@ -7,6 +7,7 @@ from unittest2 import TestCase
 from yunomi.core.counter import Counter
 from threading import Lock
 
+
 class CounterTests(TestCase):
     def setUp(self):
         Lock_patcher = mock.patch('yunomi.core.counter.Lock', spec=Lock)

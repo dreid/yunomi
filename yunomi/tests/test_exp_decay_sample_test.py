@@ -2,10 +2,9 @@ from __future__ import division, absolute_import
 
 from unittest2 import TestCase
 
-from twisted.internet.task import Clock
-
 from yunomi.compat import xrange
 from yunomi.stats.exp_decay_sample import ExponentiallyDecayingSample
+from yunomi.tests.util import Clock
 
 
 class ExponentiallyDecayingSampleTests(TestCase):

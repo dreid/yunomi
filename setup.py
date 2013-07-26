@@ -3,13 +3,16 @@ from setuptools import setup, find_packages
 setup(
     name="yunomi",
     version="0.3.0",
-    description="A Python metrics library with rate, statistical distribution, and timing information.",
+    description=("A Python metrics library with rate, statistical "
+                 "distribution, and timing information."),
+    long_description=(open('README.md').read() + '\n\n' +
+                      open('HISTORY.md').read()),
     maintainer="David Reid",
     maintainer_email="dreid@dreid.org",
     url="https://github.com/dreid/yunomi",
     license="MIT",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
@@ -21,6 +24,6 @@ setup(
         "Programming Language :: Python :: Implementation :: PyPy",
         "Topic :: Software Development :: Libraries :: Python Modules",
 
-    ]
+    ],
     packages=find_packages()
 )

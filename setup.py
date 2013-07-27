@@ -5,8 +5,8 @@ setup(
     version="0.3.0",
     description=("A Python metrics library with rate, statistical "
                  "distribution, and timing information."),
-    long_description=(open('README.md').read() + '\n\n' +
-                      open('HISTORY.md').read()),
+    long_description=(open('README.rst').read() + '\n\n' +
+                      open('HISTORY.rst').read()),
     maintainer="David Reid",
     maintainer_email="dreid@dreid.org",
     url="https://github.com/dreid/yunomi",

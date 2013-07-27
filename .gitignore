@@ -6,3 +6,4 @@ dist
 yunomi.egg-info
 .coverage
 htmlcov
+MANIFEST
